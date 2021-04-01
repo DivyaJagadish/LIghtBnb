@@ -76,11 +76,6 @@ const addUser =  function(user) {
     RETURNING *;
   `, [`${user.name}`, `${user.email}`,`${user.password}`])
   .then(res => res.rows);
-  // poll
-  // const userId = Object.keys(users).length + 1;
-  // user.id = userId;
-  // users[userId] = user;
-  // return Promise.resolve(user);
 }
 exports.addUser = addUser;
 
@@ -91,10 +86,16 @@ exports.addUser = addUser;
 //  * @param {string} guest_id The id of the user.
 //  * @return {Promise<[{}]>} A promise to the reservations.
 //  */
-// const getAllReservations = function(guest_id, limit = 10) {
-//   return getAllProperties(null, 2);
-// }
-// exports.getAllReservations = getAllReservations;
+const getAllReservations = function(guest_id, limit = 10) {
+  return pool.query(`
+  SELECT * FROM reservations
+  WHERE guest_id = $1
+  LIMIT $2
+  `, [`${guest_id}`,limit])
+  .then(res => res.rows);
+ 
+}
+exports.getAllReservations = getAllReservations;
 
 // /// Properties
 
